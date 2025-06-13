@@ -1,5 +1,5 @@
 {
-  "name": "eTrasaMp3",
+  "name": "etrasamp3",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,17 +7,19 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "copy-files-from-to": "^3.12.1",
     "react": "19.0.0",
     "react-native": "0.79.3",
-    "react-native-background-fetch": "^4.2.8",
-    "react-native-background-geolocation": "^4.18.7",
-    "react-native-geolocation-service": "^5.3.1",
-    "react-native-maps": "^1.24.3",
-    "react-native-permissions": "^5.4.1",
-    "react-native-track-player": "^4.1.1"
+    "react-native-background-fetch": "4.2.8",
+    "react-native-background-geolocation": "4.18.7",
+    "react-native-geolocation-service": "5.3.1",
+    "react-native-permissions": "5.4.1",
+    "react-native-reanimated": "^3.18.0",
+    "react-native-track-player": "4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
@@ -36,10 +38,37 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "eslint": "^9.28.0",
     "jest": "^30.0.0",
+    "patch-package": "^8.0.0",
     "prettier": "3.5.3",
     "react-test-renderer": "19.0.0",
     "typescript": "5.8.3"
   },
+  "copyFiles": [
+    {
+      "from": "app/assets/audio/cep.mp3",
+      "to": "android/app/src/main/assets/audio/cep.mp3"
+    },
+    {
+      "from": "app/assets/audio/dom.mp3",
+      "to": "android/app/src/main/assets/audio/dom.mp3"
+    },
+    {
+      "from": "app/assets/audio/kuznice.mp3",
+      "to": "android/app/src/main/assets/audio/kuznice.mp3"
+    },
+    {
+      "from": "app/assets/audio/rajski.mp3",
+      "to": "android/app/src/main/assets/audio/rajski.mp3"
+    },
+    {
+      "from": "app/assets/audio/samanta.mp3",
+      "to": "android/app/src/main/assets/audio/samanta.mp3"
+    },
+    {
+      "from": "app/assets/audio/sanktuarium.mp3",
+      "to": "android/app/src/main/assets/audio/sanktuarium.mp3"
+    }
+  ],
   "engines": {
     "node": ">=18"
   }
