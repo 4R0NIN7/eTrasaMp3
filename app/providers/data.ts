@@ -51,4 +51,13 @@ const LOCATIONS: GeoPoint[] = [
   },
 ]
 
-export { GeoPoint, LOCATIONS }
+const AUDIO_MAP: Record<string, number> = {
+  'dom.mp3': require('../assets/audio/dom.mp3'),
+  'samanta.mp3': require('../assets/audio/samanta.mp3'),
+  'rajski.mp3': require('../assets/audio/rajski.mp3'),
+  'kuznice.mp3': require('../assets/audio/kuznice.mp3'),
+  'sanktuarium.mp3': require('../assets/audio/sanktuarium.mp3'),
+  'cep.mp3': require('../assets/audio/cep.mp3'),
+}
+
+export { AUDIO_MAP, GeoPoint, LOCATIONS }

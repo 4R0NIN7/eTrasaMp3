@@ -1,6 +1,6 @@
 import { GeoPoint, LOCATIONS } from '@providers/data'
+import AudioPlayer from '@services/audio_player'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'
-import TrackPlayer from 'react-native-track-player'
 
 class GeofenceManager {
   static configure() {
@@ -15,7 +15,7 @@ class GeofenceManager {
         enableHeadless: true,
         geofenceProximityRadius: 1000,
         showsBackgroundLocationIndicator: true,
-        preventSuspend: true, // keep running in background
+        preventSuspend: true,
       },
       (state) => {
         if (!state.enabled) {
@@ -26,12 +26,17 @@ class GeofenceManager {
     )
   }
 
-  static async onGeofence(event: GeofenceEvent) {
+  static onGeofence(event: GeofenceEvent) {
     console.log(`[GEOFENCE] ${event.identifier} → ${event.action}`)
+    GeofenceManager.handleGeofenceEvent(event)
+  }
+
+  static async handleGeofenceEvent(event: GeofenceEvent) {
+    console.log(`[GEOFENCE] Event: ${event.identifier} - Action: ${event.action}`)
     if (event.action === 'ENTER') {
       const point = LOCATIONS.find((p) => p.id === event.identifier)
       if (point) {
-        await GeofenceManager.playSound(point)
+        await AudioPlayer.play(point)
       }
     }
   }
@@ -46,27 +51,11 @@ class GeofenceManager {
         notifyOnEntry: true,
         notifyOnExit: false,
       }
+
       BackgroundGeolocation.addGeofence(fence)
-        .then(() => console.log('Geofence added:', point.id))
-        .catch((err) => console.warn('Failed geofence add', err))
+        .then(() => console.log(`[GEOFENCE] Added: ${point.id}`))
+        .catch((err) => console.warn(`[GEOFENCE] Failed to add ${point.id}`, err))
     })
-  }
-
-  static async playSound(point: GeoPoint) {
-    try {
-      await TrackPlayer.setupPlayer()
-      await TrackPlayer.reset()
-
-      await TrackPlayer.add({
-        id: point.id,
-        url: `bundle://${point.mp3}`,
-        title: point.id,
-        artist: 'GeoTrigger',
-      })
-      await TrackPlayer.play()
-    } catch (err) {
-      console.error('Audio playback failed', err)
-    }
   }
 }
 

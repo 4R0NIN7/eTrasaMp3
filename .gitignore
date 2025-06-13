@@ -73,3 +73,10 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Copied files to Android project
+android/app/src/main/assets
+# Expo
+.expo
+dist/
+web-build/
