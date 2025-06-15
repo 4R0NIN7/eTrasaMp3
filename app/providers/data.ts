@@ -37,8 +37,8 @@ const LOCATIONS: GeoPoint[] = [
   },
   {
     id: 'sanktuarium',
-    latitude: 49.29190875378948,
-    longitude: 19.947841404421315,
+    latitude: 49.291274154234145, 
+    longitude: 19.924708663577178,
     radius: 50,
     mp3: 'sanktuarium.mp3',
   },
