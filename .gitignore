@@ -80,3 +80,4 @@ android/app/src/main/assets
 .expo
 dist/
 web-build/
+android/app/src/main/res/raw
