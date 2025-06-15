@@ -1,5 +1,6 @@
 import { GeoPoint, LOCATIONS } from '@providers/data'
 import AudioPlayer from '@services/audio_player'
+import { Alert } from 'react-native'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'
 
 class GeofenceManager {
@@ -39,6 +40,12 @@ class GeofenceManager {
         await AudioPlayer.play(point)
       }
     }
+    if (event.action === 'EXIT') {
+      const point = LOCATIONS.find((p) => p.id === event.identifier)
+      if (point) {
+        Alert.alert('Geofence Exit', `You exited: ${point.id}`)
+      }
+    }
   }
 
   static addFences(points: GeoPoint[]) {
@@ -49,7 +56,7 @@ class GeofenceManager {
         latitude: point.latitude,
         longitude: point.longitude,
         notifyOnEntry: true,
-        notifyOnExit: false,
+        notifyOnExit: true,
       }
 
       BackgroundGeolocation.addGeofence(fence)

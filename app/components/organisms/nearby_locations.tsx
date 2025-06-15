@@ -50,7 +50,16 @@ const NearbyLocation = () => {
   const currentInfo = useMemo(() => {
     if (!position) return 'Getting your position...'
     const coords = `latitude=${position.latitude}, longitude=${position.longitude}`
-    return nearbyPoint ? `Near: ${nearbyPoint} (${coords})` : `Your Position is ${coords}`
+
+    if (nearbyPoint) {
+      const point = LOCATIONS.find((p) => p.id === nearbyPoint)
+      const dist = point
+        ? getDistanceMeters(position.latitude, position.longitude, point.latitude, point.longitude)
+        : null
+      return `Near: ${nearbyPoint} (${coords})${dist !== null ? ` - ${dist.toFixed(1)}m away` : ''}`
+    }
+
+    return `Your Position is ${coords}`
   }, [position, nearbyPoint])
 
   return <Text style={styles.text}>{currentInfo}</Text>
