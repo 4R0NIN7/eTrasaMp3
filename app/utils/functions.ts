@@ -12,4 +12,12 @@ function getDistanceMeters(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c
 }
 
-export { getDistanceMeters }
+function formatDistance(meters: number): string {
+  return meters >= 1000 ? `${(meters / 1000).toFixed(1)} km` : `${meters.toFixed(1)} m`
+}
+
+function formatCoordinates(position: number): string {
+  return position.toFixed(5)
+}
+
+export { formatCoordinates, formatDistance, getDistanceMeters }
