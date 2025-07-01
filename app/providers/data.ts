@@ -1,63 +1,39 @@
+import rawPoints from '@providers/points.json'
+
 type GeoPoint = {
   id: string
   latitude: number
   longitude: number
   radius: number
-  mp3: string
+  audioFile: string
 }
 
-const LOCATIONS: GeoPoint[] = [
-  {
-    id: 'dom',
-    latitude: 49.29320984635581,
-    longitude: 19.93381919559277,
-    radius: 50,
-    mp3: 'dom.mp3',
-  },
-  {
-    id: 'samanta',
-    latitude: 49.29190875378948,
-    longitude: 19.947841404421315,
-    radius: 50,
-    mp3: 'samanta.mp3',
-  },
-  {
-    id: 'rajski',
-    latitude: 49.29049538196424,
-    longitude: 19.90586585071659,
-    radius: 50,
-    mp3: 'rajski.mp3',
-  },
-  {
-    id: 'kuznice',
-    latitude: 49.27123366643419,
-    longitude: 19.981964478998158,
-    radius: 50,
-    mp3: 'kuznice.mp3',
-  },
-  {
-    id: 'sanktuarium',
-    latitude: 49.291274154234145, 
-    longitude: 19.924708663577178,
-    radius: 50,
-    mp3: 'sanktuarium.mp3',
-  },
-  {
-    id: 'cep',
-    latitude: 49.284944348720515,
-    longitude: 19.971875265969203,
-    radius: 50,
-    mp3: 'cep.mp3',
-  },
-]
+const LOCATIONS: GeoPoint[] = rawPoints.map((point) => ({
+  id: point.id,
+  latitude: point.latitude,
+  longitude: point.longitude,
+  radius: point.radius,
+  audioFile: point.audioFile,
+}))
+
+const ASSETS_FOLDER_PATH = '../assets/audio/' as const
 
 const AUDIO_MAP: Record<string, number> = {
-  'dom.mp3': require('../assets/audio/dom.mp3'),
-  'samanta.mp3': require('../assets/audio/samanta.mp3'),
-  'rajski.mp3': require('../assets/audio/rajski.mp3'),
-  'kuznice.mp3': require('../assets/audio/kuznice.mp3'),
-  'sanktuarium.mp3': require('../assets/audio/sanktuarium.mp3'),
-  'cep.mp3': require('../assets/audio/cep.mp3'),
+  'dom.mp3': require(`${ASSETS_FOLDER_PATH}dom.mp3`),
+  'samanta.mp3': require(`${ASSETS_FOLDER_PATH}samanta.mp3`),
+  'rajski.mp3': require(`${ASSETS_FOLDER_PATH}rajski.mp3`),
+  'kuznice.mp3': require(`${ASSETS_FOLDER_PATH}kuznice.mp3`),
+  'sanktuarium.mp3': require(`${ASSETS_FOLDER_PATH}sanktuarium.mp3`),
+  'cep.mp3': require(`${ASSETS_FOLDER_PATH}cep.mp3`),
+
+  'TPN BUS_[Zakopane].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Zakopane].mp3`),
+  'TPN BUS_[Dolina Białki].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Dolina Białki].mp3`),
+  'TPN BUS_[Magda].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Magda].mp3`),
+  'TPN BUS_[martwy las].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[martwy las].mp3`),
+  'TPN BUS_[spor O morskie oko).mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[spor o morskie oko].mp3`),
+  'TPN BUS_[Wanta].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Wanta].mp3`),
+  'TPN BUS_[Włosienica].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Włosienica].mp3`),
+  'TPN BUS_[Wodogrzmoty].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Wodogrzmoty].mp3`),
 }
 
 export { AUDIO_MAP, GeoPoint, LOCATIONS }

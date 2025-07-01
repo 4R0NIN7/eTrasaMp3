@@ -1,0 +1,100 @@
+[
+  {
+    "id": "Zakopane",
+    "latitude": 49.255349485473296,
+    "longitude": 20.103662141896613,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Zakopane].mp3"
+  },
+  {
+    "id": "Dolina Białki",
+    "latitude": 49.25077012961659,
+    "longitude": 20.096334560767882,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Dolina Białki].mp3"
+  },
+  {
+    "id": "martwy las",
+    "latitude": 49.2420760659943,
+    "longitude": 20.093238941038443,
+    "radius": 50,
+    "audioFile": "TPN BUS_[martwy las].mp3"
+  },
+  {
+    "id": "wodogrzmoty",
+    "latitude": 49.23571505972394,
+    "longitude": 20.089779681306503,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Wodogrzmoty].mp3"
+  },
+  {
+    "id": "magda",
+    "latitude": 49.233800513366766,
+    "longitude": 20.088354230601983,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Magda].mp3"
+  },
+  {
+    "id": "Wanta",
+    "latitude": 49.22409325690365,
+    "longitude": 20.09550927752802,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Wanta].mp3"
+  },
+  {
+    "id": "spór o Morskie Oko",
+    "latitude": 49.22196739250549,
+    "longitude": 20.09405771403671,
+    "radius": 50,
+    "audioFile": "TPN BUS_[spor o morskie oko].mp3"
+  },
+  {
+    "id": "Włosienica",
+    "latitude": 49.214974890369305,
+    "longitude": 20.081598907865057,
+    "radius": 50,
+    "audioFile": "TPN BUS_[Włosienica].mp3"
+  },
+  {
+    "id": "dom",
+    "latitude": 49.29320984635581,
+    "longitude": 19.93381919559277,
+    "radius": 50,
+    "audioFile": "dom.mp3"
+  },
+  {
+    "id": "samanta",
+    "latitude": 49.29190875378948,
+    "longitude": 19.947841404421315,
+    "radius": 50,
+    "audioFile": "samanta.mp3"
+  },
+  {
+    "id": "rajski",
+    "latitude": 49.29049538196424,
+    "longitude": 19.90586585071659,
+    "radius": 50,
+    "audioFile": "rajski.mp3"
+  },
+  {
+    "id": "kuznice",
+    "latitude": 49.27123366643419,
+    "longitude": 19.981964478998158,
+    "radius": 50,
+    "audioFile": "kuznice.mp3"
+  },
+  {
+    "id": "sanktuarium",
+    "latitude": 49.291274154234145,
+    "longitude": 19.924708663577178,
+    "radius": 50,
+    "audioFile": "sanktuarium.mp3"
+  },
+  {
+    "id": "cep",
+    "latitude": 49.284944348720515,
+    "longitude": 19.971875265969203,
+    "radius": 50,
+    "audioFile": "cep.mp3"
+  }
+]
