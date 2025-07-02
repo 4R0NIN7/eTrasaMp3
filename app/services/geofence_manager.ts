@@ -1,12 +1,23 @@
 import { GeoPoint, LOCATIONS } from '@providers/data'
-import AudioPlayer from '@services/audio_player'
 import { Alert } from 'react-native'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'
+import { audioPlayer } from './audio_player'
 
 class GeofenceManager {
-  static configure() {
-    BackgroundGeolocation.on('geofence', GeofenceManager.onGeofence)
+  private static _instance: GeofenceManager
 
+  private constructor() {
+    BackgroundGeolocation.on('geofence', this.onGeofence.bind(this))
+  }
+
+  static get instance(): GeofenceManager {
+    if (!this._instance) {
+      this._instance = new GeofenceManager()
+    }
+    return this._instance
+  }
+
+  configure() {
     BackgroundGeolocation.ready(
       {
         desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
@@ -22,33 +33,29 @@ class GeofenceManager {
         if (!state.enabled) {
           BackgroundGeolocation.start()
         }
-        GeofenceManager.addFences(LOCATIONS)
+        this.addFences(LOCATIONS)
       },
     )
   }
 
-  static onGeofence(event: GeofenceEvent) {
+  private onGeofence(event: GeofenceEvent) {
     console.log(`[GEOFENCE] ${event.identifier} → ${event.action}`)
-    GeofenceManager.handleGeofenceEvent(event)
+    this.handleGeofenceEvent(event)
   }
 
-  static async handleGeofenceEvent(event: GeofenceEvent) {
+  private async handleGeofenceEvent(event: GeofenceEvent) {
     console.log(`[GEOFENCE] Event: ${event.identifier} - Action: ${event.action}`)
+    const point = LOCATIONS.find((p) => p.id === event.identifier)
+    if (!point) return
+
     if (event.action === 'ENTER') {
-      const point = LOCATIONS.find((p) => p.id === event.identifier)
-      if (point) {
-        await AudioPlayer.play(point)
-      }
-    }
-    if (event.action === 'EXIT') {
-      const point = LOCATIONS.find((p) => p.id === event.identifier)
-      if (point) {
-        Alert.alert('Geofence Exit', `You exited: ${point.id}`)
-      }
+      await audioPlayer.play(point)
+    } else if (event.action === 'EXIT') {
+      Alert.alert('Geofence Exit', `You exited: ${point.id}`)
     }
   }
 
-  static addFences(points: GeoPoint[]) {
+  private addFences(points: GeoPoint[]) {
     points.forEach((point) => {
       const fence: Geofence = {
         identifier: point.id,
@@ -66,4 +73,6 @@ class GeofenceManager {
   }
 }
 
-export default GeofenceManager
+const geofenceManager = GeofenceManager.instance
+
+export { geofenceManager }

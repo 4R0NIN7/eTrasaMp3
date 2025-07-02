@@ -1,13 +1,13 @@
 import { NearbyLocation } from '@organisms/nearby_locations'
-import GeofenceManager from '@services/geofence_manager'
-import React, { useEffect } from 'react'
+import { geofenceManager } from '@services/geofence_manager'
+import React, { useEffect, useRef } from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 
 const App = () => {
+  const geofenceRef = useRef(geofenceManager)
+
   useEffect(() => {
-    ;(async () => {
-      GeofenceManager.configure()
-    })()
+    geofenceRef.current.configure()
   }, [])
 
   return (
