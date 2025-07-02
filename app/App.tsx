@@ -1,24 +1,27 @@
+import { Loader } from '@atoms/loader'
+import { useAppInitialization } from '@hooks/use_app_initialization'
 import { NearbyLocation } from '@organisms/nearby_locations'
-import { geofenceManager } from '@services/geofence_manager'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 
 const App = () => {
-  const geofenceRef = useRef(geofenceManager)
+  const { isReady, error } = useAppInitialization()
 
-  useEffect(() => {
-    geofenceRef.current.configure()
-  }, [])
+  if (error) {
+    return <Loader message="Something went wrong. Please restart the app." />
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <NearbyLocation />
+      {isReady ? <NearbyLocation /> : <Loader message="Setting things up" />}
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+  },
 })
 
 export { App }

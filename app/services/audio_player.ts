@@ -1,4 +1,4 @@
-import { AUDIO_MAP, GeoPoint } from '@providers/data'
+import { GeoPoint, LOCATIONS, STATIC_AUDIO_REQUIRE_MAP } from '@providers/data'
 import { createAudioPlayer } from 'expo-audio'
 import * as FileSystem from 'expo-file-system'
 
@@ -7,6 +7,7 @@ class AudioPlayer {
   private playerMap = new Map<string, ReturnType<typeof createAudioPlayer>>()
   private queue: GeoPoint[] = []
   private isPlaying = false
+  private audioMap: Record<string, number> = {}
 
   private constructor() {}
 
@@ -18,10 +19,20 @@ class AudioPlayer {
   }
 
   async configure() {
-    console.log('[AudioPlayer] Configuring audio assets...')
-    const audioFiles = Object.keys(AUDIO_MAP)
+    console.log('[AudioPlayer] Configuring audio files...')
+
+    this.audioMap = {}
+    for (const point of LOCATIONS) {
+      const audio = STATIC_AUDIO_REQUIRE_MAP[point.audioFile]
+      if (audio) {
+        this.audioMap[point.audioFile] = audio
+      } else {
+        console.warn(`[AudioPlayer] ❌ Missing audio asset for: ${point.audioFile}`)
+      }
+    }
+
     const results = await Promise.all(
-      audioFiles.map(async (file) => {
+      Object.keys(this.audioMap).map(async (file) => {
         const assetPath = `${FileSystem.bundleDirectory}assets/audio/${file}`
         const fileInfo = await FileSystem.getInfoAsync(assetPath)
         return { file, exists: fileInfo.exists }
@@ -29,14 +40,12 @@ class AudioPlayer {
     )
 
     const missing = results.filter((r) => !r.exists)
-    if (missing.length > 0) {
-      console.warn('[AudioPlayer]🚨 Missing audio files:')
-      missing.forEach(({ file }) => console.warn(`[AudioPlayer]❌ ${file}`))
+    if (missing.length === 0) {
+      console.log('[AudioPlayer] ✅ All audio files are accessible.')
     } else {
-      console.log('[AudioPlayer]✅ All audio files bundled and accessible.')
+      console.warn('[AudioPlayer] 🚨 Missing audio files:')
+      missing.forEach(({ file }) => console.warn(`  - ${file}`))
     }
-
-    console.log('[AudioPlayer] Configuration complete.')
   }
 
   async play(point: GeoPoint) {
@@ -53,7 +62,7 @@ class AudioPlayer {
       return
     }
 
-    const assetModule = AUDIO_MAP[next.audioFile]
+    const assetModule = this.audioMap[next.audioFile]
     if (!assetModule) {
       console.warn(`[AudioPlayer] Missing audio file in AUDIO_MAP: ${next.audioFile}`)
       this.playNextInQueue()

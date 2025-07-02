@@ -1,7 +1,7 @@
 import { GeoPoint, LOCATIONS } from '@providers/data'
+import { audioPlayer } from '@services/audio_player'
 import { Alert } from 'react-native'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'
-import { audioPlayer } from './audio_player'
 
 class GeofenceManager {
   private static _instance: GeofenceManager
@@ -17,7 +17,8 @@ class GeofenceManager {
     return this._instance
   }
 
-  configure() {
+  async configure() {
+    await audioPlayer.configure()
     BackgroundGeolocation.ready(
       {
         desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,

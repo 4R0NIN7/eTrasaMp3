@@ -1,3 +1,4 @@
+import { Loader } from '@atoms/loader'
 import { useNearbyLocation } from '@hooks/use_nearby_location'
 import { LocationList } from '@molecules/location_list'
 import { formatCoordinates, formatDistance, getDistanceMeters } from '@utils/functions'
@@ -92,13 +93,7 @@ const NearbyLocation = () => {
   }))
 
   if (!currentInfo) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <Text style={styles.loadingText}>Getting your position...</Text>
-        </View>
-      </View>
-    )
+    return <Loader message="Getting your position..." />
   }
 
   return (
