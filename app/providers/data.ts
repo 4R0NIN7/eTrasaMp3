@@ -1,6 +1,6 @@
 import rawPoints from '@providers/points.json'
 
-type GeoPoint = {
+type TGeoPoint = {
   id: string
   latitude: number
   longitude: number
@@ -8,7 +8,7 @@ type GeoPoint = {
   audioFile: string
 }
 
-const LOCATIONS: GeoPoint[] = rawPoints.map((point) => ({
+const LOCATIONS: TGeoPoint[] = rawPoints.map((point) => ({
   id: point.id,
   latitude: point.latitude,
   longitude: point.longitude,
@@ -36,4 +36,4 @@ const AUDIO_MAP: Record<string, number> = {
   'TPN BUS_[Wodogrzmoty].mp3': require(`${ASSETS_FOLDER_PATH}TPN BUS_[Wodogrzmoty].mp3`),
 }
 
-export { AUDIO_MAP, GeoPoint, LOCATIONS }
+export { AUDIO_MAP, TGeoPoint as GeoPoint, LOCATIONS }

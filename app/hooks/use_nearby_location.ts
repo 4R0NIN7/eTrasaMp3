@@ -4,10 +4,10 @@ import { getDistanceMeters } from '@utils/functions'
 import { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service'
 
-type LocationPoint = { latitude: number; longitude: number }
+type TLocationPoint = { latitude: number; longitude: number }
 
 export function useNearbyLocation() {
-  const [position, setPosition] = useState<LocationPoint | null>(null)
+  const [position, setPosition] = useState<TLocationPoint | null>(null)
   const [nearbyPoint, setNearbyPoint] = useState<GeoPoint | undefined>()
 
   useEffect(() => {

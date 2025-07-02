@@ -1,5 +1,6 @@
 import { useNearbyLocation } from '@hooks/use_nearby_location'
 import { LocationList } from '@molecules/location_list'
+import { Colors } from '@utils/ui/colors'
 import { formatCoordinates, formatDistance, getDistanceMeters } from '@utils/functions'
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -63,21 +64,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    color: '#d2e1df',
+    color: Colors.PrimaryText,
   },
   heading: {
     fontSize: 25,
     fontWeight: '600',
     marginBottom: 16,
-    color: '#ffffff',
+    color: Colors.HeadingText,
   },
   label: {
     fontSize: 17,
     marginBottom: 8,
-    color: '#d2e1df',
+    color: Colors.PrimaryText,
   },
   card: {
-    backgroundColor: '#003f42',
+    backgroundColor: Colors.CardBackground,
     padding: 16,
     marginVertical: 8,
     borderRadius: 12,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontStyle: 'italic',
-    color: '#d2e1df',
+    color: Colors.PrimaryText,
   },
 })
 
