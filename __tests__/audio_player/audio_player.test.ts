@@ -1,0 +1,66 @@
+import { LOCATIONS } from '@providers/data'
+
+jest.mock('expo-audio', () => ({
+  createAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    seekTo: jest.fn(),
+    duration: 2, // 2 seconds
+  })),
+}))
+
+jest.mock('expo-file-system', () => ({
+  bundleDirectory: '',
+  getInfoAsync: jest.fn(async () => ({ exists: true })),
+}))
+
+beforeEach(() => {
+  jest.resetModules()
+  jest.clearAllMocks()
+  jest.useFakeTimers()
+})
+
+describe('AudioPlayer', () => {
+  it('plays an audio file and handles queue', async () => {
+    const { audioPlayer } = require('@services/audio_player')
+    await audioPlayer.configure()
+
+    await audioPlayer.play(LOCATIONS[0])
+
+    const { createAudioPlayer } = require('expo-audio')
+    const player = createAudioPlayer.mock.results[0].value
+
+    expect(player.seekTo).toHaveBeenCalledWith(0)
+    expect(player.play).toHaveBeenCalled()
+
+    jest.advanceTimersByTime(2000)
+  })
+
+  it('skips playback if file is missing', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation()
+
+    const { audioPlayer } = require('@services/audio_player')
+    await audioPlayer.configure()
+
+    await audioPlayer.play({
+      id: 'missing',
+      latitude: 0,
+      longitude: 0,
+      radius: 100,
+      audioFile: 'missing.mp3',
+    })
+
+    expect(warnSpy).toHaveBeenCalledWith('[AudioPlayer] Missing audio file in AUDIO_MAP: missing.mp3')
+    warnSpy.mockRestore()
+  })
+
+  it('reuses audio player instances', async () => {
+    const { audioPlayer } = require('@services/audio_player')
+    await audioPlayer.configure()
+
+    await audioPlayer.play(LOCATIONS[0])
+    await audioPlayer.play(LOCATIONS[0])
+
+    const { createAudioPlayer } = require('expo-audio')
+    expect(createAudioPlayer).toHaveBeenCalledTimes(1)
+  })
+})

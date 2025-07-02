@@ -1,24 +1,25 @@
 {
-    "cSpell.words": [
-        "allprojects",
-        "Białki",
-        "buildscript",
-        "Dolina",
-        "etrasamp",
-        "Geofence",
-        "geolocation",
-        "kuznice",
-        "Magda",
-        "martwy",
-        "Morskie",
-        "rajski",
-        "samanta",
-        "sanktuarium",
-        "spor",
-        "Trasa",
-        "Wanta",
-        "Włosienica",
-        "wodogrzmoty",
-        "Zakopane"
-    ]
+  "cSpell.words": [
+    "allprojects",
+    "Białki",
+    "buildscript",
+    "Dolina",
+    "etrasamp",
+    "Geofence",
+    "geolocation",
+    "gradlew",
+    "kuznice",
+    "Magda",
+    "martwy",
+    "Morskie",
+    "rajski",
+    "samanta",
+    "sanktuarium",
+    "spor",
+    "Trasa",
+    "Wanta",
+    "Włosienica",
+    "wodogrzmoty",
+    "Zakopane"
+  ]
 }
