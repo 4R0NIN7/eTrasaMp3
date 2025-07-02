@@ -56,7 +56,7 @@ class AudioPlayer {
     const assetModule = AUDIO_MAP[next.audioFile]
     if (!assetModule) {
       console.warn(`[AudioPlayer] Missing audio file in AUDIO_MAP: ${next.audioFile}`)
-      this.playNextInQueue() // skip invalid entry
+      this.playNextInQueue()
       return
     }
 
@@ -76,7 +76,7 @@ class AudioPlayer {
       setTimeout(() => {
         this.isPlaying = false
         this.playNextInQueue()
-      }, playbackDuration * 1000) // convert to ms
+      }, playbackDuration * 1000)
     } catch (error) {
       console.error(`[AudioPlayer] Playback error for ${next.audioFile}:`, error)
       this.isPlaying = false
