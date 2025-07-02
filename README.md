@@ -1,97 +1,168 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🎧 eTrasaMP3
 
-# Getting Started
+**eTrasaMP3** is a React Native mobile application that plays MP3 audio files based on the user’s GPS location. When a user approaches predefined geographic points, the app triggers playback of the corresponding audio file.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 🚀 Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- 📍 Background GPS location tracking
+- 🔊 Automatic MP3 playback when near a defined geofence
+- 🔒 Runtime permissions handling
+- 💤 Background fetch to manage updates
+- 🔄 React Native lifecycle integration (start/stop audio with location)
+- ✅ Tests and commit validation via Jest, Husky, and Commitlint
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
+
+## 📦 Major Libraries
+
+| Purpose                | Package(s) Used                                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Core framework         | `react-native`, `react`                                                                                    |
+| Audio playback         | `expo-audio`                                                                                               |
+| Background geolocation | `react-native-background-geolocation`, `react-native-background-fetch`, `react-native-geolocation-service` |
+| Permissions            | `react-native-permissions`                                                                                 |
+| Animation              | `react-native-reanimated`                                                                                  |
+| Utility                | `lodash`                                                                                                   |
+| Dev tools              | `jest`, `@testing-library/react-native`, `husky`, `commitlint`, `eslint`, `prettier`, `patch-package`      |
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Install dependencies
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+yarn install
 ```
 
-## Step 2: Build and run your app
+### 2. Install iOS pods (macOS only)
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+```sh
+cd ios
+bundle install
+bundle exec pod install
+```
+
+---
+
+## 📱 Running the App
+
+### Start Metro
+
+```sh
+yarn start
+```
 
 ### Android
 
 ```sh
-# Using npm
-npm run android
-
-# OR using Yarn
 yarn android
 ```
 
 ### iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
 ```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 🧪 Testing
 
-## Step 3: Modify your app
+Run all Jest tests:
 
-Now that you have successfully run the app, let's make changes!
+```sh
+yarn test
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+---
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## 💅 Linting & Formatting
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```sh
+yarn lint         # Run ESLint
+yarn prettier .   # Run Prettier manually
+```
 
-## Congratulations! :tada:
+Linting and formatting also run automatically via `lint-staged` on each commit.
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+## 🔐 Git Hooks & Commit Conventions
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Commitlint + Husky
 
-# Troubleshooting
+This project uses **Husky** and **Commitlint** to enforce [Conventional Commits](https://www.conventionalcommits.org/).
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Sample valid commit:
 
-# Learn More
+```sh
+feat: add geofence audio trigger
+```
 
-To learn more about React Native, take a look at the following resources:
+### Supported types
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- `feat`: New feature
+- `fix`: Bug fix
+- `test`: Add or fix tests
+- `chore`: Tooling, scripts
+- `docs`: Documentation change
+- `refactor`: Refactor code
+- `style`: Lint/formatting
+
+---
+
+## 📦 Production Build
+
+### Android Release APK
+
+```sh
+yarn build:release
+yarn install:apk  # Optional: Installs release APK on connected device
+```
+
+### Manual Bundle (optional)
+
+```sh
+yarn bundle
+```
+
+---
+
+## ⚙️ Project Scripts
+
+| Command              | Description                      |
+| -------------------- | -------------------------------- |
+| `yarn android`       | Run app on Android               |
+| `yarn ios`           | Run app on iOS                   |
+| `yarn start`         | Start Metro bundler              |
+| `yarn test`          | Run unit tests                   |
+| `yarn lint`          | Lint the code                    |
+| `yarn build:release` | Create Android release build     |
+| `yarn install:apk`   | Install APK to connected Android |
+| `yarn bundle`        | Generate JS bundle for Android   |
+
+---
+
+## 🔎 Troubleshooting
+
+- Android Studio/Emulator issues? Try `adb reverse tcp:8081 tcp:8081`
+- iOS issues? Try `cd ios && xcodebuild clean`
+- Metro not responding? `yarn start --reset-cache`
+
+---
+
+## 🧠 Learn More
+
+- [React Native Docs](https://reactnative.dev)
+- [Expo Audio](https://docs.expo.dev/versions/latest/sdk/audio/)
+- [React Native Background Geolocation](https://github.com/transistorsoft/react-native-background-geolocation)
+- [Jest Testing Docs](https://jestjs.io/)
+- [Husky Docs](https://typicode.github.io/husky/)
+- [Commitlint Docs](https://commitlint.js.org)
+
+---
+
+## 🎉 Happy Mapping & Listening
