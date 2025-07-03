@@ -1,5 +1,5 @@
+import palenicaWlosienicaPoints from '@providers/json/palenica_włosienica.json'
 import { TGeoPoint } from '@providers/location_dataset'
-import palenicaWlosienicaPoints from '@providers/palenica_włosienica.json'
 
 jest.mock('expo-audio', () => ({
   createAudioPlayer: jest.fn(() => ({

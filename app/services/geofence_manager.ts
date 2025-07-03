@@ -1,4 +1,4 @@
-import { TGeoPoint } from '@providers/data'
+import { TGeoPoint } from '@providers/location_dataset'
 import { audioPlayer } from '@services/audio_player'
 import { Alert } from 'react-native'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'

@@ -1,5 +1,5 @@
 import { useLocationStore } from '@hooks/use_location_store'
-import { TGeoPoint } from '@providers/data'
+import { TGeoPoint } from '@providers/location_dataset'
 import { requestLocationPermissions } from '@services/permissions'
 import { getDistanceMeters } from '@utils/functions'
 import { useEffect, useState } from 'react'

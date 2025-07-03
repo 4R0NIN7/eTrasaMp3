@@ -1,7 +1,7 @@
-import morskieOkoPoints from '@providers/cep_morskie_oko.json'
-import palenicaWlosienicaPoints from '@providers/palenica_włosienica.json'
+import morskieOkoPoints from '@providers/json/cep_morskie_oko.json'
+import palenicaWlosienicaPoints from '@providers/json/palenica_włosienica.json'
 
-export type TGeoPoint = {
+type TGeoPoint = {
   id: string
   latitude: number
   longitude: number
@@ -9,9 +9,11 @@ export type TGeoPoint = {
   audioFile: string
 }
 
-export type DatasetName = 'palenica' | 'morskieOko'
+type DatasetName = 'palenica' | 'morskieOko'
 
-export const LOCATION_DATASETS: Record<DatasetName, TGeoPoint[]> = {
+const LOCATION_DATASETS: Record<DatasetName, TGeoPoint[]> = {
   palenica: palenicaWlosienicaPoints.map((p) => ({ ...p })),
   morskieOko: morskieOkoPoints.map((p) => ({ ...p })),
 }
+
+export { DatasetName, LOCATION_DATASETS, TGeoPoint }

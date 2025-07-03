@@ -1,4 +1,5 @@
-import { STATIC_AUDIO_REQUIRE_MAP, TGeoPoint } from '@providers/data'
+import { TGeoPoint } from '@providers/location_dataset'
+import { STATIC_AUDIO_REQUIRE_MAP } from '@providers/media_file_dataset'
 import { createAudioPlayer } from 'expo-audio'
 
 class AudioPlayer {

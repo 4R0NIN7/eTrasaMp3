@@ -28,21 +28,6 @@ jest.mock('react-native-background-geolocation', () => {
   }
 })
 
-jest.mock('@providers/data', () => {
-  return {
-    AUDIO_MAP: {},
-    LOCATIONS: [
-      {
-        id: 'Zakopane',
-        latitude: 49.25,
-        longitude: 20.1,
-        radius: 100,
-        audioFile: 'xyz.mp3',
-      },
-    ],
-  }
-})
-
 const mockUseNearbyLocation = (value: any) => {
   const hook = require('@hooks/use_nearby_location')
   hook.useNearbyLocation.mockReturnValue(value)
