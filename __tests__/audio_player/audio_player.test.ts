@@ -1,4 +1,5 @@
-import { LOCATIONS } from '@providers/data'
+import { TGeoPoint } from '@providers/location_dataset'
+import palenicaWlosienicaPoints from '@providers/palenica_włosienica.json'
 
 jest.mock('expo-audio', () => ({
   createAudioPlayer: jest.fn(() => ({
@@ -13,6 +14,14 @@ jest.mock('expo-file-system', () => ({
   getInfoAsync: jest.fn(async () => ({ exists: true })),
 }))
 
+const LOCATIONS: TGeoPoint[] = palenicaWlosienicaPoints.map((point) => ({
+  id: point.id,
+  latitude: point.latitude,
+  longitude: point.longitude,
+  radius: point.radius,
+  audioFile: point.audioFile,
+}))
+
 beforeEach(() => {
   jest.resetModules()
   jest.clearAllMocks()
@@ -22,7 +31,7 @@ beforeEach(() => {
 describe('AudioPlayer', () => {
   it('plays an audio file and handles queue', async () => {
     const { audioPlayer } = require('@services/audio_player')
-    await audioPlayer.configure()
+    await audioPlayer.configure(LOCATIONS)
 
     await audioPlayer.play(LOCATIONS[0])
 
@@ -39,7 +48,7 @@ describe('AudioPlayer', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation()
 
     const { audioPlayer } = require('@services/audio_player')
-    await audioPlayer.configure()
+    await audioPlayer.configure(LOCATIONS)
 
     await audioPlayer.play({
       id: 'missing',
@@ -55,7 +64,7 @@ describe('AudioPlayer', () => {
 
   it('reuses audio player instances', async () => {
     const { audioPlayer } = require('@services/audio_player')
-    await audioPlayer.configure()
+    await audioPlayer.configure(LOCATIONS)
 
     await audioPlayer.play(LOCATIONS[0])
     await audioPlayer.play(LOCATIONS[0])

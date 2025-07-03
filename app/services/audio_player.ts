@@ -1,11 +1,10 @@
-import { GeoPoint, LOCATIONS, STATIC_AUDIO_REQUIRE_MAP } from '@providers/data'
+import { STATIC_AUDIO_REQUIRE_MAP, TGeoPoint } from '@providers/data'
 import { createAudioPlayer } from 'expo-audio'
-import * as FileSystem from 'expo-file-system'
 
 class AudioPlayer {
   private static _instance: AudioPlayer
   private playerMap = new Map<string, ReturnType<typeof createAudioPlayer>>()
-  private queue: GeoPoint[] = []
+  private queue: TGeoPoint[] = []
   private isPlaying = false
   private audioMap: Record<string, number> = {}
 
@@ -18,37 +17,20 @@ class AudioPlayer {
     return this._instance
   }
 
-  async configure() {
-    console.log('[AudioPlayer] Configuring audio files...')
-
+  async configure(locations: TGeoPoint[]) {
     this.audioMap = {}
-    for (const point of LOCATIONS) {
+    locations.forEach((point) => {
       const audio = STATIC_AUDIO_REQUIRE_MAP[point.audioFile]
       if (audio) {
+        console.log(`[AudioPlayer] Found audio ${audio} for: ${point.audioFile} in ${locations}`)
         this.audioMap[point.audioFile] = audio
       } else {
-        console.warn(`[AudioPlayer] ❌ Missing audio asset for: ${point.audioFile}`)
+        console.warn(`[AudioPlayer] Missing audio for: ${point.audioFile} ${locations}`)
       }
-    }
-
-    const results = await Promise.all(
-      Object.keys(this.audioMap).map(async (file) => {
-        const assetPath = `${FileSystem.bundleDirectory}assets/audio/${file}`
-        const fileInfo = await FileSystem.getInfoAsync(assetPath)
-        return { file, exists: fileInfo.exists }
-      }),
-    )
-
-    const missing = results.filter((r) => !r.exists)
-    if (missing.length === 0) {
-      console.log('[AudioPlayer] ✅ All audio files are accessible.')
-    } else {
-      console.warn('[AudioPlayer] 🚨 Missing audio files:')
-      missing.forEach(({ file }) => console.warn(`  - ${file}`))
-    }
+    })
   }
 
-  async play(point: GeoPoint) {
+  async play(point: TGeoPoint) {
     this.queue.push(point)
     if (!this.isPlaying) {
       await this.playNextInQueue()

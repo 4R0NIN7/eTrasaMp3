@@ -1,10 +1,11 @@
-import { GeoPoint, LOCATIONS } from '@providers/data'
+import { TGeoPoint } from '@providers/data'
 import { audioPlayer } from '@services/audio_player'
 import { Alert } from 'react-native'
 import BackgroundGeolocation, { Geofence, GeofenceEvent } from 'react-native-background-geolocation'
 
 class GeofenceManager {
   private static _instance: GeofenceManager
+  private locations: TGeoPoint[] = []
 
   private constructor() {
     BackgroundGeolocation.on('geofence', this.onGeofence.bind(this))
@@ -17,8 +18,9 @@ class GeofenceManager {
     return this._instance
   }
 
-  async configure() {
-    await audioPlayer.configure()
+  async configure(locations: TGeoPoint[]) {
+    await audioPlayer.configure(locations)
+    this.locations = [...locations]
     BackgroundGeolocation.ready(
       {
         desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
@@ -34,7 +36,30 @@ class GeofenceManager {
         if (!state.enabled) {
           BackgroundGeolocation.start()
         }
-        this.addFences(LOCATIONS)
+        this.addFences(locations)
+      },
+    )
+  }
+
+  async updateLocations(locations: TGeoPoint[]) {
+    await audioPlayer.configure(locations)
+    this.locations = [...locations]
+    BackgroundGeolocation.ready(
+      {
+        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+        distanceFilter: 50,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        enableHeadless: true,
+        geofenceProximityRadius: 1000,
+        showsBackgroundLocationIndicator: true,
+        preventSuspend: true,
+      },
+      (state) => {
+        if (!state.enabled) {
+          BackgroundGeolocation.start()
+        }
+        this.addFences(locations)
       },
     )
   }
@@ -46,7 +71,7 @@ class GeofenceManager {
 
   private async handleGeofenceEvent(event: GeofenceEvent) {
     console.log(`[GEOFENCE] Event: ${event.identifier} - Action: ${event.action}`)
-    const point = LOCATIONS.find((p) => p.id === event.identifier)
+    const point = this.locations.find((p) => p.id === event.identifier)
     if (!point) return
 
     if (event.action === 'ENTER') {
@@ -56,7 +81,7 @@ class GeofenceManager {
     }
   }
 
-  private addFences(points: GeoPoint[]) {
+  private addFences(points: TGeoPoint[]) {
     points.forEach((point) => {
       const fence: Geofence = {
         identifier: point.id,
@@ -66,7 +91,7 @@ class GeofenceManager {
         notifyOnEntry: true,
         notifyOnExit: true,
       }
-
+      BackgroundGeolocation.removeGeofences()
       BackgroundGeolocation.addGeofence(fence)
         .then(() => console.log(`[GEOFENCE] Added: ${point.id}`))
         .catch((err) => console.warn(`[GEOFENCE] Failed to add ${point.id}`, err))

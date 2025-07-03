@@ -1,5 +1,3 @@
-import rawPoints from '@providers/points.json'
-
 type TGeoPoint = {
   id: string
   latitude: number
@@ -7,14 +5,6 @@ type TGeoPoint = {
   radius: number
   audioFile: string
 }
-
-const LOCATIONS: TGeoPoint[] = rawPoints.map((point) => ({
-  id: point.id,
-  latitude: point.latitude,
-  longitude: point.longitude,
-  radius: point.radius,
-  audioFile: point.audioFile,
-}))
 
 const ASSETS_FOLDER_PATH = '../assets/audio' as const
 
@@ -27,6 +17,27 @@ const STATIC_AUDIO_REQUIRE_MAP: Record<string, number> = {
   'TPN BUS_[Wanta].mp3': require(`${ASSETS_FOLDER_PATH}/TPN BUS_[Wanta].mp3`),
   'TPN BUS_[Włosienica].mp3': require(`${ASSETS_FOLDER_PATH}/TPN BUS_[Włosienica].mp3`),
   'TPN BUS_[Wodogrzmoty].mp3': require(`${ASSETS_FOLDER_PATH}/TPN BUS_[Wodogrzmoty].mp3`),
+
+  'CEP - Morskie Oko_[CEP ogolnie].mp3': require(`${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[CEP ogolnie].mp3`),
+  'CEP - Morskie Oko_[cut_641sec]_join_[lasy].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[lasy].mp3`,
+  ),
+  'CEP - Morskie Oko_[cut_641sec]_join_[Sucha Woda].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[Sucha Woda].mp3`,
+  ),
+  'CEP - Morskie Oko_[cut_641sec]_join_[Tatry ogólnie].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[Tatry ogólnie].mp3`,
+  ),
+  'CEP - Morskie Oko_[cut_641sec]_join_[wierch Poroniec].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[wierch Poroniec].mp3`,
+  ),
+  'CEP - Morskie Oko_[cut_641sec]_join_[Wiktorówki].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[Wiktorówki].mp3`,
+  ),
+  'CEP - Morskie Oko_[cut_641sec]_join_[wypas].mp3': require(
+    `${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[cut_641sec]_join_[wypas].mp3`,
+  ),
+  'CEP - Morskie Oko_[Jaszczurówka].mp3': require(`${ASSETS_FOLDER_PATH}/CEP - Morskie Oko_[Jaszczurówka].mp3`),
 } as const
 
-export { TGeoPoint as GeoPoint, LOCATIONS, STATIC_AUDIO_REQUIRE_MAP }
+export { TGeoPoint, STATIC_AUDIO_REQUIRE_MAP }

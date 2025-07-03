@@ -1,4 +1,5 @@
-import { GeoPoint, LOCATIONS } from '@providers/data'
+import { useLocationStore } from '@hooks/use_location_store'
+import { TGeoPoint } from '@providers/data'
 import { requestLocationPermissions } from '@services/permissions'
 import { getDistanceMeters } from '@utils/functions'
 import { useEffect, useState } from 'react'
@@ -8,7 +9,8 @@ type TLocationPoint = { latitude: number; longitude: number }
 
 export function useNearbyLocation() {
   const [position, setPosition] = useState<TLocationPoint | null>(null)
-  const [nearbyPoint, setNearbyPoint] = useState<GeoPoint | undefined>()
+  const [nearbyPoint, setNearbyPoint] = useState<TGeoPoint | undefined>()
+  const { locations } = useLocationStore()
 
   useEffect(() => {
     let watchId: number
@@ -22,7 +24,7 @@ export function useNearbyLocation() {
           const lon = pos.coords.longitude
           setPosition({ latitude: lat, longitude: lon })
 
-          const nearby = LOCATIONS.find((point) => {
+          const nearby = locations.find((point) => {
             const dist = getDistanceMeters(lat, lon, point.latitude, point.longitude)
             return dist <= point.radius
           })

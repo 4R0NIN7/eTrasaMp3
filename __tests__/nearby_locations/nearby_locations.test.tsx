@@ -6,6 +6,28 @@ jest.mock('@hooks/use_nearby_location', () => ({
   useNearbyLocation: jest.fn(),
 }))
 
+jest.mock('expo-audio', () => ({
+  createAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    seekTo: jest.fn(),
+    duration: 1,
+  })),
+}))
+
+jest.mock('react-native-background-geolocation', () => {
+  return {
+    __esModule: true,
+    default: {
+      on: jest.fn(),
+      ready: jest.fn((_, callback) => callback({ enabled: true })),
+      start: jest.fn(),
+      addGeofence: jest.fn(() => Promise.resolve()),
+      removeGeofences: jest.fn(() => Promise.resolve()),
+    },
+    Geofence: jest.fn(),
+  }
+})
+
 jest.mock('@providers/data', () => {
   return {
     AUDIO_MAP: {},

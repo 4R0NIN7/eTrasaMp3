@@ -1,0 +1,58 @@
+[
+  {
+    "id": "CEP Zakopane",
+    "latitude": 49.28502949673394,
+    "longitude": 19.973441742170028,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[CEP ogolnie].mp3"
+  },
+  {
+    "id": "Jaszczurówka",
+    "latitude": 49.25077012961659,
+    "longitude": 20.096334560767882,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[Jaszczurówka].mp3"
+  },
+  {
+    "id": "Tatry Ogólnie",
+    "latitude": 49.285021282111735,
+    "longitude": 20.00424278729675,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[Tatry ogólnie].mp3"
+  },
+  {
+    "id": "Sucha Woda",
+    "latitude": 49.286664191327446,
+    "longitude": 20.0307346104034,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[Sucha Woda].mp3"
+  },
+  {
+    "id": "Wypas kulturowy",
+    "latitude": 49.29231103349678,
+    "longitude": 20.059396758464985,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[wypas].mp3"
+  },
+  {
+    "id": "Wiktorówki",
+    "latitude": 49.28748641617845,
+    "longitude": 20.085384352972646,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[Wiktorówki].mp3"
+  },
+  {
+    "id": "Lasy",
+    "latitude": 49.29032669117461,
+    "longitude": 20.098417844348837,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[lasy].mp3"
+  },
+  {
+    "id": "Wierch Poroniec",
+    "latitude": 49.287555693167455,
+    "longitude": 20.109190578877918,
+    "radius": 50,
+    "audioFile": "CEP - Morskie Oko_[cut_641sec]_join_[wierch Poroniec].mp3"
+  }
+]

@@ -1,10 +1,12 @@
 import { Loader } from '@atoms/loader'
+import { useLocationStore } from '@hooks/use_location_store'
 import { useNearbyLocation } from '@hooks/use_nearby_location'
 import { LocationList } from '@molecules/location_list'
+import { audioPlayer } from '@services/audio_player'
 import { formatCoordinates, formatDistance, getDistanceMeters } from '@utils/functions'
 import { Colors } from '@utils/ui/colors'
 import React, { useEffect, useMemo } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const styles = StyleSheet.create({
@@ -44,10 +46,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: Colors.HeadingText,
   },
+  switchRouteButton: {
+    marginTop: 24,
+  },
 })
 
 const NearbyLocation = () => {
   const { position, nearbyPoint } = useNearbyLocation()
+  const { locations, dataset, toggleDataset } = useLocationStore()
 
   const currentInfo = useMemo(() => {
     if (!position) return null
@@ -96,16 +102,37 @@ const NearbyLocation = () => {
     return <Loader message="Getting your position..." />
   }
 
+  const nextDatasetName = dataset === 'palenica' ? 'Morskie Oko' : 'Palenica'
+
+  const playRandomFile = () => {
+    if (locations.length === 0) return
+
+    const index = Math.floor(Math.random() * locations.length)
+    const randomPoint = locations[index]
+
+    Alert.alert('Playing Random Audio', `📍 ${randomPoint.id}\n🎵 ${randomPoint.audioFile}`)
+
+    audioPlayer.play(randomPoint)
+  }
+
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.card, animatedCardStyle]}>
         <Text style={styles.heading}>All Known Locations</Text>
-        {position && <LocationList position={position} highlightId={nearbyPoint?.id} />}
+        {position && <LocationList position={position} highlightId={nearbyPoint?.id} locations={locations} />}
       </Animated.View>
+
       <Animated.View style={[styles.card, animatedCardStyle]}>
         <Text style={styles.heading}>Your Current Position</Text>
         <Text style={styles.label}>{currentInfo.userCoords}</Text>
       </Animated.View>
+
+      <View style={styles.switchRouteButton}>
+        <Button title={`Switch to ${nextDatasetName}`} onPress={toggleDataset} />
+      </View>
+      <View style={{ marginTop: 12 }}>
+        <Button title="▶️ Play random audio from current route" onPress={playRandomFile} />
+      </View>
     </View>
   )
 }
