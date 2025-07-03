@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "expo": "53.0.16",
-    "expo-audio": "^0.4.7",
+    "expo-audio": "0.4.7",
     "lodash": "^4.17.21",
     "postinstall-postinstall": "^2.1.0",
     "react": "19.0.0",
