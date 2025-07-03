@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react'
 
 export const useAppInitialization = () => {
   const { locations } = useLocationStore()
-  const [isReady, setIsReady] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [initCount, setInitCount] = useState(0)
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -14,7 +13,6 @@ export const useAppInitialization = () => {
       try {
         await geofenceManager.configure(locations)
         setIsReady(true)
-        setInitCount((prev) => prev + 1)
       } catch (err) {
         console.error('[App Initialization] Error:', err)
         setError(err as Error)
@@ -22,7 +20,7 @@ export const useAppInitialization = () => {
     }
 
     init()
-  }, [locations])
+  }, [])
 
-  return { isReady, error, initCount }
+  return { isReady, error }
 }

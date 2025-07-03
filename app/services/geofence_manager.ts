@@ -42,26 +42,10 @@ class GeofenceManager {
   }
 
   async updateLocations(locations: TGeoPoint[]) {
+    console.log('new locations', locations)
     await audioPlayer.configure(locations)
     this.locations = [...locations]
-    BackgroundGeolocation.ready(
-      {
-        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-        distanceFilter: 50,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        enableHeadless: true,
-        geofenceProximityRadius: 1000,
-        showsBackgroundLocationIndicator: true,
-        preventSuspend: true,
-      },
-      (state) => {
-        if (!state.enabled) {
-          BackgroundGeolocation.start()
-        }
-        this.addFences(locations)
-      },
-    )
+    this.addFences(locations)
   }
 
   private onGeofence(event: GeofenceEvent) {

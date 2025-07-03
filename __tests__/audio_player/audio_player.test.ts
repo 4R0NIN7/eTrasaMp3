@@ -58,7 +58,7 @@ describe('AudioPlayer', () => {
       audioFile: 'missing.mp3',
     })
 
-    expect(warnSpy).toHaveBeenCalledWith('[AudioPlayer] Missing audio file in AUDIO_MAP: missing.mp3')
+    expect(warnSpy).toHaveBeenCalledWith('[AudioPlayer] Audio file not found for: missing.mp3')
     warnSpy.mockRestore()
   })
 

@@ -4,10 +4,12 @@ import { createAudioPlayer } from 'expo-audio'
 
 class AudioPlayer {
   private static _instance: AudioPlayer
-  private playerMap = new Map<string, ReturnType<typeof createAudioPlayer>>()
-  private queue: TGeoPoint[] = []
+  private activePlayer: ReturnType<typeof createAudioPlayer> | null = null
+  private activeAudioKey: string | null = null
   private isPlaying = false
   private audioMap: Record<string, number> = {}
+  private idToPointMap = new Map<string, TGeoPoint>()
+  private timeoutId: ReturnType<typeof setTimeout> | null = null
 
   private constructor() {}
 
@@ -19,64 +21,102 @@ class AudioPlayer {
   }
 
   async configure(locations: TGeoPoint[]) {
+    await this.stop()
+
     this.audioMap = {}
+    this.idToPointMap.clear()
+    this.activeAudioKey = null
+    this.isPlaying = false
+
     locations.forEach((point) => {
       const audio = STATIC_AUDIO_REQUIRE_MAP[point.audioFile]
       if (audio) {
-        console.log(`[AudioPlayer] Found audio ${audio} for: ${point.audioFile} in ${locations}`)
         this.audioMap[point.audioFile] = audio
+        this.idToPointMap.set(point.audioFile, point)
       } else {
-        console.warn(`[AudioPlayer] Missing audio for: ${point.audioFile} ${locations}`)
+        console.warn(`[AudioPlayer] Missing audio for: ${point.audioFile}`)
       }
     })
   }
 
-  async play(point: TGeoPoint) {
-    this.queue.push(point)
-    if (!this.isPlaying) {
-      await this.playNextInQueue()
+  async stop() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = null
     }
+
+    if (this.activePlayer) {
+      try {
+        this.activePlayer.pause()
+        this.activePlayer.seekTo(0)
+      } catch (err) {
+        console.warn('[AudioPlayer] Failed to stop audio:', err)
+      }
+    }
+
+    this.isPlaying = false
+    this.activePlayer = null
+    this.activeAudioKey = null
   }
 
-  private async playNextInQueue() {
-    const next = this.queue.shift()
-    if (!next) {
-      this.isPlaying = false
+  async play(point: TGeoPoint) {
+    if (this.isPlaying && this.activeAudioKey === point.audioFile) {
+      console.log(`[AudioPlayer] Already playing: ${point.audioFile}`)
       return
     }
 
-    const assetModule = this.audioMap[next.audioFile]
+    console.log('[AudioPlayer] play →', point.audioFile)
+    await this.stop()
+
+    const assetModule = this.audioMap[point.audioFile]
     if (!assetModule) {
-      console.warn(`[AudioPlayer] Missing audio file in AUDIO_MAP: ${next.audioFile}`)
-      this.playNextInQueue()
+      console.warn(`[AudioPlayer] Audio file not found for: ${point.audioFile}`)
       return
     }
 
-    let player = this.playerMap.get(next.audioFile)
-    if (!player) {
-      player = createAudioPlayer(assetModule)
-      this.playerMap.set(next.audioFile, player)
+    const player = createAudioPlayer(assetModule)
+    this.activePlayer = player
+    this.activeAudioKey = point.audioFile
+    this.isPlaying = true
+
+    player.seekTo(0)
+    player.play()
+
+    const duration = player.duration ?? 1
+    this.timeoutId = setTimeout(() => {
+      this.cleanup()
+    }, duration * 1000)
+  }
+
+  async playRandom() {
+    const keys = Object.keys(this.audioMap)
+    if (keys.length === 0) {
+      console.warn('[AudioPlayer] No audio files in map')
+      return
     }
 
-    try {
-      this.isPlaying = true
-      player.seekTo(0)
+    const randomKey = keys[Math.floor(Math.random() * keys.length)]
+    const point = this.idToPointMap.get(randomKey)
 
-      player.play()
+    if (!point) {
+      console.warn(`[AudioPlayer] No TGeoPoint for ${randomKey}`)
+      return
+    }
 
-      const playbackDuration = player.duration
-      setTimeout(() => {
-        this.isPlaying = false
-        this.playNextInQueue()
-      }, playbackDuration * 1000)
-    } catch (error) {
-      console.error(`[AudioPlayer] Playback error for ${next.audioFile}:`, error)
-      this.isPlaying = false
-      this.playNextInQueue()
+    console.log('[AudioPlayer] playRandom →', point.audioFile)
+    await this.play(point)
+  }
+
+  private cleanup() {
+    this.isPlaying = false
+    this.activePlayer = null
+    this.activeAudioKey = null
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = null
     }
   }
 }
 
 const audioPlayer = AudioPlayer.instance
-
 export { audioPlayer }

@@ -6,7 +6,7 @@ import { audioPlayer } from '@services/audio_player'
 import { formatCoordinates, formatDistance, getDistanceMeters } from '@utils/functions'
 import { Colors } from '@utils/ui/colors'
 import React, { useEffect, useMemo } from 'react'
-import { Alert, Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const styles = StyleSheet.create({
@@ -102,17 +102,10 @@ const NearbyLocation = () => {
     return <Loader message="Getting your position..." />
   }
 
-  const nextDatasetName = dataset === 'palenica' ? 'Morskie Oko' : 'Palenica'
+  const nextDatasetName = dataset === 'palenica' ? 'Zakopane - Morskie Oko' : 'Palenica - Morskie Oko'
 
-  const playRandomFile = () => {
-    if (locations.length === 0) return
-
-    const index = Math.floor(Math.random() * locations.length)
-    const randomPoint = locations[index]
-
-    Alert.alert('Playing Random Audio', `📍 ${randomPoint.id}\n🎵 ${randomPoint.audioFile}`)
-
-    audioPlayer.play(randomPoint)
+  const onPress = () => {
+    audioPlayer.playRandom()
   }
 
   return (
@@ -131,7 +124,7 @@ const NearbyLocation = () => {
         <Button title={`Switch to ${nextDatasetName}`} onPress={toggleDataset} />
       </View>
       <View style={{ marginTop: 12 }}>
-        <Button title="▶️ Play random audio from current route" onPress={playRandomFile} />
+        <Button title="▶️ Play random audio from current route" onPress={onPress} />
       </View>
     </View>
   )
