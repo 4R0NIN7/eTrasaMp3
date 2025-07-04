@@ -33,6 +33,15 @@ jest.mock('react-native-background-geolocation', () => {
   }
 })
 
+const mockUseLocationStore = (locations: any[]) => {
+  const hook = require('@hooks/use_location_store')
+  hook.useLocationStore = jest.fn().mockReturnValue({
+    locations,
+    dataset: 'palenica',
+    toggleDataset: jest.fn(),
+  })
+}
+
 const mockUseNearbyLocation = (value: any) => {
   const hook = require('@hooks/use_nearby_location')
   hook.useNearbyLocation.mockReturnValue(value)
@@ -59,24 +68,6 @@ describe('<NearbyLocation />', () => {
     expect(getByText('Your Current Position')).toBeTruthy()
     expect(getByText(/Latitude:/)).toBeTruthy()
     expect(getByText(/Longitude:/)).toBeTruthy()
-  })
-
-  it('highlights the closest location', () => {
-    mockUseNearbyLocation({
-      position: { latitude: 49.2, longitude: 20.1 },
-      nearbyPoint: {
-        id: 'Zakopane',
-        latitude: 49.25,
-        longitude: 20.1,
-        radius: 50,
-        audioFile: 'xyz.mp3',
-      },
-    })
-
-    const { queryAllByText } = render(<NearbyLocation />)
-
-    const flags = queryAllByText(/🚩/)
-    expect(flags.length).toBeGreaterThan(0)
   })
 
   it('passes correct props to LocationList', () => {
@@ -107,5 +98,35 @@ describe('<NearbyLocation />', () => {
 
     const { getByText } = render(<NearbyLocation />)
     expect(getByText('Your Current Position')).toBeTruthy()
+  })
+
+  it('renders closest location with flag emoji', () => {
+    const position = { latitude: 49.2, longitude: 20.1 }
+
+    mockUseNearbyLocation({ position })
+    mockUseLocationStore([
+      {
+        id: 'VeryClose',
+        latitude: 49.2001,
+        longitude: 20.1,
+        radius: 100, // within ~11 meters
+        audioFile: 'close.mp3',
+      },
+      {
+        id: 'FarAway',
+        latitude: 49.3,
+        longitude: 20.2,
+        radius: 50,
+        audioFile: 'far.mp3',
+      },
+    ])
+
+    const { queryAllByText } = render(<NearbyLocation />)
+
+    const flags = queryAllByText(/🚩/)
+    expect(flags.length).toBeGreaterThan(0)
+
+    const veryCloseItem = queryAllByText(/VeryClose/)
+    expect(veryCloseItem.length).toBeGreaterThan(0)
   })
 })

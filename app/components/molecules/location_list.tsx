@@ -2,13 +2,11 @@ import { AnimatedFlag } from '@atoms/animated_flag'
 import { TGeoPoint } from '@providers/location_dataset.types'
 import { formatDistance, getDistanceMeters } from '@utils/functions'
 import { Colors } from '@utils/ui/colors'
-import { capitalize } from 'lodash'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FlatList, StyleSheet, Text } from 'react-native'
 
 type TProps = {
   position: { latitude: number; longitude: number }
-  highlightId?: string
   locations: TGeoPoint[]
 }
 
@@ -17,7 +15,7 @@ type TListItem = {
   distance: number
 }
 
-export const LocationList = ({ position, highlightId, locations }: TProps) => {
+export const LocationList = ({ position, locations }: TProps) => {
   const data = locations
     .map((point) => ({
       id: point.id,
@@ -25,13 +23,21 @@ export const LocationList = ({ position, highlightId, locations }: TProps) => {
     }))
     .sort((a, b) => a.distance - b.distance)
 
+  const nearbyPoint = useMemo(() => {
+    if (!position) return undefined
+    return locations.find((point) => {
+      const dist = getDistanceMeters(position.latitude, position.longitude, point.latitude, point.longitude)
+      return dist <= point.radius
+    })
+  }, [position, locations])
+
   const keyExtractor = (item: TListItem) => item.id
   const renderItem = ({ item, index }: { item: TListItem; index: number }) => {
-    const isClosest = item.id === highlightId
+    const isClosest = item.id === nearbyPoint?.id
     return (
       <Text style={[styles.itemText, isClosest && styles.highlight]}>
         {isClosest && <AnimatedFlag active={isClosest} />}
-        {index + 1}. {capitalize(item.id)}: {formatDistance(item.distance)}
+        {index + 1}. {item.id}: {formatDistance(item.distance)}
       </Text>
     )
   }

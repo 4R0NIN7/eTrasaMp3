@@ -3,7 +3,7 @@ import { useLocationStore } from '@hooks/use_location_store'
 import { useNearbyLocation } from '@hooks/use_nearby_location'
 import { LocationList } from '@molecules/location_list'
 import { audioPlayer } from '@services/audio_player'
-import { formatCoordinates, formatDistance, getDistanceMeters } from '@utils/functions'
+import { formatCoordinates, getDistanceMeters } from '@utils/functions'
 import { Colors } from '@utils/ui/colors'
 import React, { useEffect, useMemo } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
@@ -52,36 +52,14 @@ const styles = StyleSheet.create({
 })
 
 const NearbyLocation = () => {
-  const { position, nearbyPoint } = useNearbyLocation()
+  const { position } = useNearbyLocation()
   const { locations, dataset, toggleDataset } = useLocationStore()
 
   const currentInfo = useMemo(() => {
     if (!position) return null
-
     const userCoords = `Latitude: ${formatCoordinates(position.latitude)}\nLongitude: ${formatCoordinates(position.longitude)}`
-
-    if (!nearbyPoint) {
-      return { userCoords }
-    }
-
-    const distance = getDistanceMeters(
-      position.latitude,
-      position.longitude,
-      nearbyPoint.latitude,
-      nearbyPoint.longitude,
-    )
-
-    const locationCoords = `Latitude: ${nearbyPoint.latitude.toFixed(5)}, Longitude: ${nearbyPoint.longitude.toFixed(5)}`
-    const radius = `Radius: ${nearbyPoint.radius}m`
-    const formattedDistance = formatDistance(distance)
-
-    return {
-      userCoords,
-      locationCoords,
-      radius,
-      formattedDistance,
-    }
-  }, [position, nearbyPoint])
+    return { userCoords }
+  }, [position])
 
   const opacity = useSharedValue(0)
   const translateY = useSharedValue(20)
@@ -112,7 +90,7 @@ const NearbyLocation = () => {
     <View style={styles.container}>
       <Animated.View style={[styles.card, animatedCardStyle]}>
         <Text style={styles.heading}>All Known Locations</Text>
-        {position && <LocationList position={position} highlightId={nearbyPoint?.id} locations={locations} />}
+        {position && <LocationList position={position} locations={locations} />}
       </Animated.View>
 
       <Animated.View style={[styles.card, animatedCardStyle]}>

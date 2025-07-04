@@ -1,7 +1,4 @@
-import { useLocationStore } from '@hooks/use_location_store'
-import { TGeoPoint } from '@providers/location_dataset.types'
 import { requestLocationPermissions } from '@services/permissions'
-import { getDistanceMeters } from '@utils/functions'
 import { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service'
 
@@ -9,8 +6,6 @@ type TLocationPoint = { latitude: number; longitude: number }
 
 export function useNearbyLocation() {
   const [position, setPosition] = useState<TLocationPoint | null>(null)
-  const [nearbyPoint, setNearbyPoint] = useState<TGeoPoint | undefined>()
-  const { locations } = useLocationStore()
 
   useEffect(() => {
     let watchId: number
@@ -23,13 +18,6 @@ export function useNearbyLocation() {
           const lat = pos.coords.latitude
           const lon = pos.coords.longitude
           setPosition({ latitude: lat, longitude: lon })
-
-          const nearby = locations.find((point) => {
-            const dist = getDistanceMeters(lat, lon, point.latitude, point.longitude)
-            return dist <= point.radius
-          })
-
-          setNearbyPoint(nearby)
         },
         (error) => console.error('Failed to watch location:', error),
         {
@@ -46,5 +34,5 @@ export function useNearbyLocation() {
     }
   }, [])
 
-  return { position, nearbyPoint }
+  return { position }
 }
