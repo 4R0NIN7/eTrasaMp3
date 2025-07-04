@@ -123,9 +123,9 @@ const NearbyLocation = () => {
       <View style={styles.switchRouteButton}>
         <Button title={`Switch to ${nextDatasetName}`} onPress={toggleDataset} />
       </View>
-      <View style={{ marginTop: 12 }}>
+      {/* <View style={{ marginTop: 12 }}>
         <Button title="▶️ Play random audio from current route" onPress={onPress} />
-      </View>
+      </View> */}
     </View>
   )
 }
