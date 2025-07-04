@@ -19,10 +19,15 @@ jest.mock('react-native-background-geolocation', () => {
     __esModule: true,
     default: {
       on: jest.fn(),
-      ready: jest.fn((_, callback) => callback({ enabled: true })),
+      ready: jest.fn((config, callback) => {
+        callback({ enabled: true })
+        return Promise.resolve({ enabled: true })
+      }),
       start: jest.fn(),
-      addGeofence: jest.fn(() => Promise.resolve()),
+      stop: jest.fn(),
+      addGeofences: jest.fn(() => Promise.resolve()),
       removeGeofences: jest.fn(() => Promise.resolve()),
+      getGeofences: jest.fn((cb) => cb([])),
     },
     Geofence: jest.fn(),
   }

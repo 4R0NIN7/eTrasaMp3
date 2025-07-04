@@ -1,6 +1,6 @@
-import { DatasetName, LOCATION_DATASETS, TGeoPoint } from '@providers/location_dataset'
+import { DatasetName, LOCATION_DATASETS, TGeoPoint } from '@providers/location_dataset.types'
 import { geofenceManager } from '@services/geofence_manager'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export const useLocationStore = () => {
   const [dataset, setDataset] = useState<DatasetName>('palenica')
@@ -11,8 +11,11 @@ export const useLocationStore = () => {
 
   const toggleDataset = () => {
     setDataset((prev) => (prev === 'palenica' ? 'morskieOko' : 'palenica'))
-    geofenceManager.updateLocations(locations)
   }
+
+  useEffect(() => {
+    geofenceManager.updateLocations(locations)
+  }, [locations])
 
   return { dataset, locations, toggleDataset }
 }

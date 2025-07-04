@@ -1,5 +1,5 @@
-import { TGeoPoint } from '@providers/location_dataset'
-import { STATIC_AUDIO_REQUIRE_MAP } from '@providers/media_file_dataset'
+import { TGeoPoint } from '@providers/location_dataset.types'
+import { STATIC_AUDIO_REQUIRE_MAP } from '@providers/media_file_dataset.types'
 import { createAudioPlayer } from 'expo-audio'
 
 class AudioPlayer {
@@ -8,7 +8,7 @@ class AudioPlayer {
   private activeAudioKey: string | null = null
   private isPlaying = false
   private audioMap: Record<string, number> = {}
-  private idToPointMap = new Map<string, TGeoPoint>()
+  private audioFileToPointMap = new Map<string, TGeoPoint>()
   private timeoutId: ReturnType<typeof setTimeout> | null = null
 
   private constructor() {}
@@ -24,7 +24,7 @@ class AudioPlayer {
     await this.stop()
 
     this.audioMap = {}
-    this.idToPointMap.clear()
+    this.audioFileToPointMap.clear()
     this.activeAudioKey = null
     this.isPlaying = false
 
@@ -32,7 +32,7 @@ class AudioPlayer {
       const audio = STATIC_AUDIO_REQUIRE_MAP[point.audioFile]
       if (audio) {
         this.audioMap[point.audioFile] = audio
-        this.idToPointMap.set(point.audioFile, point)
+        this.audioFileToPointMap.set(point.audioFile, point)
       } else {
         console.warn(`[AudioPlayer] Missing audio for: ${point.audioFile}`)
       }
@@ -83,9 +83,12 @@ class AudioPlayer {
     player.play()
 
     const duration = player.duration ?? 1
-    this.timeoutId = setTimeout(() => {
-      this.cleanup()
-    }, duration * 1000)
+    this.timeoutId = setTimeout(
+      () => {
+        this.cleanup()
+      },
+      duration * 1000 + 500,
+    )
   }
 
   async playRandom() {
@@ -96,7 +99,7 @@ class AudioPlayer {
     }
 
     const randomKey = keys[Math.floor(Math.random() * keys.length)]
-    const point = this.idToPointMap.get(randomKey)
+    const point = this.audioFileToPointMap.get(randomKey)
 
     if (!point) {
       console.warn(`[AudioPlayer] No TGeoPoint for ${randomKey}`)

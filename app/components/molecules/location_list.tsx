@@ -1,5 +1,5 @@
 import { AnimatedFlag } from '@atoms/animated_flag'
-import { TGeoPoint } from '@providers/location_dataset'
+import { TGeoPoint } from '@providers/location_dataset.types'
 import { formatDistance, getDistanceMeters } from '@utils/functions'
 import { Colors } from '@utils/ui/colors'
 import { capitalize } from 'lodash'
