@@ -10,8 +10,7 @@
     "prepare": "husky",
     "test": "jest",
     "postinstall": "patch-package",
-    "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "build:release": "yarn bundle && cd android && ./gradlew assembleRelease",
+    "build:apk": "cd android && ./gradlew clean && ./gradlew assembleRelease",
     "install:apk": "adb install android/app/build/outputs/apk/release/app-release.apk"
   },
   "dependencies": {
