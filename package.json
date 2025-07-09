@@ -15,14 +15,14 @@
     "debug:offline": "mkdir -p android/app/src/main/assets && npx react-native bundle --platform android --dev true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && npx react-native run-android"
   },
   "dependencies": {
-    "expo": "53.0.16",
-    "expo-audio": "0.4.7",
+    "expo": "53.0.19",
+    "expo-audio": "0.4.8",
     "lodash": "^4.17.21",
     "postinstall-postinstall": "^2.1.0",
     "react": "19.0.0",
     "react-native": "0.79.3",
     "react-native-background-fetch": "4.2.8",
-    "react-native-background-geolocation": "4.18.8",
+    "react-native-background-geolocation": "4.18.9",
     "react-native-geolocation-service": "5.3.1",
     "react-native-permissions": "5.4.1",
     "react-native-reanimated": "^3.18.0"
